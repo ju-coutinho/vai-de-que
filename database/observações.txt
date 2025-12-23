@@ -1,0 +1,4 @@
+A database do SQL não é usada no projeto final, mas está inclusa no repositório mesmo assim por preferencia própria.
+Este banco de dados foi usado como base durante o projeto inicial e é adequado para implementação na aplicação caso necessário.
+
+Os URLs de imagem que adicionei aqui são todos provenientes do site IMDb e tem a resulução melhor do que as capas que vem direto da API.

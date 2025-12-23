@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vai de Que?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container-estrelas">
+    {% for i in range(1, 81) %}
+        {% set cor = ['#fff4d6', '#b89961', '#d4af37', '#8a6d3b']|random %}
+        <div class="estrela" style="
+            top: {{ range(1, 100)|random }}%; 
+            left: {{ range(1, 100)|random }}%; 
+            --tamanho: {{ [10, 14, 20]|random }}px; 
+            --cor: {{cor}};
+            --atraso: {{ range(1, 80)|random /10 }}s; 
+            --duracao: {{ range(3, 8)|random }}s;">
+        </div>
+    {% endfor %}
+</div>
+
+    <h1>Vai de Que<span class="letra-animada">?</span></h1>
+    
+    {% if filme %}
+        <div class="container-filme cartao-vidro">
+            <img src="{{ filme.url_capa }}" alt="Capa do filme">
+            <div class="info-filme">
+                <h2>{{ filme.nome_filme }}</h2>
+                <p>{{ filme.descricao }}</p>
+                <div class="tag-plataforma">
+                    Disponível em: {{ filme.nome_plataforma }}
+                </div>
+            </div>
+        </div>
+    {% elif msg_erro %}
+        <div class="mensagem-erro">⚠️ {{ msg_erro }}</div>
+    {% else %}
+        <p style="color: rgba(251, 251, 251, 0.859); margin-bottom: 20px; text-align: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 700; letter-spacing: 0.5px;">Selecione os filtros e clique em sortear!</p>
+    {% endif %}
+
+    <form method="POST" action="/" class="cartao-vidro">
+        <div class="grupo-selecao">
+            <div>
+                <input type="checkbox" id="disney" name="streamings" value="1" {% if '1' in ids_selecionados %} checked {% endif %}>
+                <label for="disney">Disney+</label>
+            </div>
+            <div>
+                <input type="checkbox" id="netflix" name="streamings" value="2" {% if '2' in ids_selecionados %} checked {% endif %}>
+                <label for="netflix">Netflix</label>
+            </div>
+            <div>
+                <input type="checkbox" id="prime" name="streamings" value="3" {% if '3' in ids_selecionados %} checked {% endif %}>
+                <label for="prime">Prime Video</label>
+            </div>
+            <div>
+                <input type="checkbox" id="hbo" name="streamings" value="4" {% if '4' in ids_selecionados %} checked {% endif %}>
+                <label for="hbo">Max (HBO)</label>
+            </div>
+        </div>
+
+        <details class="gaveta-generos">
+            <summary>Filtros Extras <span class="setinha">▾</span></summary>
+            <div class="grupo-selecao lista-generos">
+                {% for genero in generos %}
+                    <div>
+                        <input type="checkbox" id="genero-{{ genero.id }}" name="generos" value="{{ genero.id }}" {% if genero.id|string in ids_generos_selecionados %} checked {% endif %}>
+                        <label for="genero-{{ genero.id }}">{{ genero.nome }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </details>
+
+        <button type="submit">Sortear Filme</button>
+    </form>
+
+</body>
+</html>
